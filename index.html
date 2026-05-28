@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homeland Kitchen — Myanmar Cuisine, Bangkok</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #0D0A07;
+            --surface: #131008;
+            --surface-2: #1C1610;
+            --surface-3: #241E15;
+            --text: #EDE0CA;
+            --text-muted: #7A6A57;
+            --text-faint: #3A2F22;
+            --gold: #C4862A;
+            --gold-light: #E8AD4E;
+            --gold-pale: #F5D898;
+            --border: rgba(196, 134, 42, 0.18);
+            --border-subtle: rgba(237, 224, 202, 0.07);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Grain overlay for atmosphere */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.032;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 0 52px;
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(to bottom, rgba(13,10,7,0.92), transparent);
+            transition: background 0.5s ease, backdrop-filter 0.5s ease;
+        }
+
+        header.scrolled {
+            background: rgba(13,10,7,0.95);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .nav-logo img {
+            height: 46px;
+            width: auto;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 44px;
+        }
+
+        nav ul a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.72rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            font-weight: 400;
+            transition: color 0.3s;
+        }
+
+        nav ul a:hover { color: var(--gold-light); }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 52px 88px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 65% 55% at 72% 45%, rgba(196,134,42,0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 45% 60% at 18% 80%, rgba(196,134,42,0.04) 0%, transparent 55%),
+                var(--bg);
+        }
+
+        /* Decorative vertical gold line */
+        .hero-line {
+            position: absolute;
+            top: 76px;
+            right: 300px;
+            width: 1px;
+            height: 38%;
+            background: linear-gradient(to bottom, transparent, rgba(196,134,42,0.5), transparent);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 960px;
+        }
+
+        .hero-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 36px;
+            animation: fadeUp 0.9s ease both;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            width: 44px;
+            height: 1px;
+            background: var(--gold);
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .hero-eyebrow span {
+            font-size: 0.68rem;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 400;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(4.5rem, 11vw, 10rem);
+            font-weight: 300;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            animation: fadeUp 0.9s ease 0.1s both;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--gold-light);
+        }
+
+        .hero-sub {
+            margin-top: 44px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: flex-end;
+            gap: 48px;
+            animation: fadeUp 0.9s ease 0.2s both;
+        }
+
+        .hero-desc {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            max-width: 460px;
+            line-height: 1.85;
+            font-weight: 300;
+        }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.72rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            border: 1px solid var(--border);
+            padding: 16px 34px;
+            transition: all 0.35s ease;
+            white-space: nowrap;
+            font-weight: 400;
+        }
+
+        .btn-ghost:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--bg);
+        }
+
+        .btn-arrow {
+            width: 18px;
+            height: 1px;
+            background: currentColor;
+            transition: width 0.3s;
+            position: relative;
+        }
+
+        .btn-ghost:hover .btn-arrow { width: 28px; }
+
+        /* ── MARQUEE ── */
+        .marquee-wrap {
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+            background: var(--surface);
+            overflow: hidden;
+            padding: 15px 0;
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marquee 28s linear infinite;
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            padding: 0 28px;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            white-space: nowrap;
+            font-weight: 400;
+        }
+
+        .dot {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: var(--gold);
+            display: inline-block;
+            flex-shrink: 0;
+        }
+
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+        }
+
+        /* ── STORY ── */
+        .story-section {
+            padding: 120px 52px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 88px;
+            max-width: 1240px;
+            margin: 0 auto;
+        }
+
+        .story-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .label {
+            font-size: 0.63rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 28px;
+            font-weight: 400;
+        }
+
+        .story-heading {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+            font-weight: 300;
+            line-height: 1.08;
+            margin-bottom: 32px;
+            letter-spacing: -0.01em;
+        }
+
+        .story-heading em {
+            font-style: italic;
+            color: var(--gold-light);
+        }
+
+        .story-body {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            line-height: 1.95;
+            font-weight: 300;
+        }
+
+        .story-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .medallion {
+            width: 290px;
+            height: 290px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .medallion::before {
+            content: '';
+            position: absolute;
+            inset: 18px;
+            border: 1px solid var(--text-faint);
+            border-radius: 50%;
+        }
+
+        .medallion-inner { text-align: center; }
+
+        .medallion-year {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 4.2rem;
+            font-weight: 300;
+            color: var(--gold);
+            line-height: 1;
+            display: block;
+        }
+
+        .medallion-text {
+            font-size: 0.6rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 10px;
+            display: block;
+        }
+
+        /* ── FOOD GRID ── */
+        .food-section {
+            padding: 0 52px 120px;
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        .food-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 56px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .food-title {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 300;
+        }
+
+        .food-count {
+            font-size: 0.68rem;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Asymmetric editorial grid — no boring 3-equal-columns */
+        .food-grid {
+            display: grid;
+            grid-template-columns: 1.65fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 20px;
+        }
+
+        .card-featured { grid-column: 1; grid-row: 1 / 3; }
+        .card-a        { grid-column: 2; grid-row: 1; }
+        .card-b        { grid-column: 2; grid-row: 2; }
+
+        .food-card {
+            position: relative;
+            overflow: hidden;
+            background: var(--surface-2);
+            cursor: pointer;
+        }
+
+        .img-wrap {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-featured .img-wrap { height: 700px; }
+        .card-a .img-wrap,
+        .card-b .img-wrap       { height: 325px; }
+
+        .placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(150deg, var(--surface-2) 0%, var(--surface-3) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: transform 0.75s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .food-card:hover .placeholder { transform: scale(1.05); }
+
+        /* Hatching pattern on placeholders */
+        .placeholder::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                42deg,
+                transparent,
+                transparent 38px,
+                rgba(196,134,42,0.025) 38px,
+                rgba(196,134,42,0.025) 39px
+            );
+        }
+
+        .placeholder-svg {
+            opacity: 0.1;
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top,
+                rgba(13,10,7,0.97) 0%,
+                rgba(13,10,7,0.55) 48%,
+                transparent 100%
+            );
+            padding: 44px 30px 30px;
+        }
+
+        .food-tag {
+            display: inline-block;
+            font-size: 0.58rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(196,134,42,0.5);
+            padding: 4px 10px;
+            margin-bottom: 12px;
+            font-weight: 400;
+        }
+
+        .food-name {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 10px;
+        }
+
+        .card-featured .food-name { font-size: 2.6rem; }
+        .card-a .food-name,
+        .card-b .food-name        { font-size: 1.7rem; }
+
+        .food-desc {
+            font-size: 0.84rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-weight: 300;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.45s ease, opacity 0.45s ease;
+        }
+
+        .food-card:hover .food-desc {
+            max-height: 80px;
+            opacity: 1;
+        }
+
+        /* ── DIVIDER ── */
+        .gem-divider {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0 52px;
+            max-width: 1440px;
+            margin: 0 auto 88px;
+        }
+
+        .gem-divider::before,
+        .gem-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-subtle);
+        }
+
+        .gem {
+            width: 7px;
+            height: 7px;
+            background: var(--gold);
+            transform: rotate(45deg);
+            flex-shrink: 0;
+        }
+
+        /* ── VISIT ── */
+        .visit-section {
+            background: var(--surface);
+            border-top: 1px solid var(--border-subtle);
+            padding: 104px 52px;
+        }
+
+        .visit-inner {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 88px;
+            align-items: center;
+        }
+
+        .visit-heading {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(2.4rem, 4vw, 3.4rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 52px;
+        }
+
+        .visit-heading em {
+            font-style: italic;
+            color: var(--gold-light);
+        }
+
+        .visit-details {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .visit-item {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+        }
+
+        .visit-icon {
+            width: 38px;
+            height: 38px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .visit-icon svg {
+            width: 13px;
+            height: 13px;
+            fill: none;
+            stroke: var(--gold);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .vi-label {
+            font-size: 0.62rem;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 7px;
+            font-weight: 400;
+        }
+
+        .vi-value {
+            font-size: 0.94rem;
+            color: var(--text);
+            line-height: 1.65;
+            font-weight: 300;
+        }
+
+        .visit-right {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .hours-block .label { margin-bottom: 20px; }
+
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .hours-row span:first-child {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .hours-row span:last-child {
+            font-size: 0.88rem;
+            color: var(--text);
+            font-weight: 400;
+        }
+
+        .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            text-decoration: none;
+            background: var(--gold);
+            color: var(--bg);
+            padding: 18px 40px;
+            font-size: 0.72rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+            transition: all 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-cta::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gold-light);
+            transform: translateX(-105%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .btn-cta:hover::before { transform: translateX(0); }
+
+        .btn-cta span { position: relative; z-index: 1; }
+
+        /* ── FOOTER ── */
+        footer {
+            padding: 36px 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .foot-copy,
+        .foot-loc {
+            font-size: 0.68rem;
+            color: var(--text-faint);
+            letter-spacing: 1px;
+            font-weight: 300;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.85s ease, transform 0.85s ease;
+        }
+
+        .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .d1 { transition-delay: 0.1s; }
+        .d2 { transition-delay: 0.2s; }
+        .d3 { transition-delay: 0.3s; }
+
+        /* ── MOBILE ── */
+        @media (max-width: 900px) {
+            header { padding: 0 24px; }
+            nav ul { display: none; }
+
+            .hero { padding: 0 24px 64px; }
+            .hero-line { display: none; }
+
+            .hero-sub {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .story-section {
+                grid-template-columns: 1fr;
+                padding: 80px 24px;
+                gap: 52px;
+            }
+            .story-right { display: none; }
+
+            .food-section { padding: 0 24px 80px; }
+
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+            .card-featured,
+            .card-a,
+            .card-b {
+                grid-column: 1;
+                grid-row: auto;
+            }
+            .card-featured .img-wrap { height: 440px; }
+            .card-a .img-wrap,
+            .card-b .img-wrap { height: 270px; }
+
+            /* Always show food desc on mobile */
+            .food-desc { max-height: 80px; opacity: 1; }
+
+            .visit-inner {
+                grid-template-columns: 1fr;
+                gap: 52px;
+            }
+            .visit-section { padding: 80px 24px; }
+
+            .gem-divider { padding: 0 24px; }
+
+            footer {
+                padding: 28px 24px;
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header id="hdr">
+        <div class="nav-logo">
+            <img src="IMG_0682.png" alt="Homeland Kitchen">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#story">Our Story</a></li>
+                <li><a href="#visit">Visit</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-line"></div>
+        <div class="hero-content">
+            <div class="hero-eyebrow">
+                <span>Est. 2022 &nbsp;&middot;&nbsp; Myanmar</span>
+            </div>
+            <h1 class="hero-title">
+                HOMELAND<br>
+                <em>Kitchen</em>
+            </h1>
+            <div class="hero-sub">
+                <p class="hero-desc">From a humble coffee shop in Pyay, Myanmar — to the heart of Bangkok. We carry our family&rsquo;s flavors, history, and warmth to your table.</p>
+                <a href="#visit" class="btn-ghost">
+                    <span>Find Us</span>
+                    <span class="btn-arrow"></span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARQUEE TICKER -->
+    <div class="marquee-wrap">
+        <div class="marquee-track">
+            <div class="marquee-item">
+                <span class="dot"></span> Pyay Palatta Bowl
+                <span class="dot"></span> Pork Rib Tempura
+                <span class="dot"></span> Garlic Fired Chicken
+                <span class="dot"></span> Open Daily 3 PM &ndash; 2 AM
+                <span class="dot"></span> Bangkok, Thailand
+                <span class="dot"></span> Myanmar Cuisine
+                <span class="dot"></span> Est. 2022
+                <span class="dot"></span>
+            </div>
+            <div class="marquee-item">
+                <span class="dot"></span> Pyay Palatta Bowl
+                <span class="dot"></span> Pork Rib Tempura
+                <span class="dot"></span> Garlic Fried Chicken
+                <span class="dot"></span> Open Daily 3 PM &ndash; 2 AM
+                <span class="dot"></span> Bangkok, Thailand
+                <span class="dot"></span> Myanmar Cuisine
+                <span class="dot"></span> Est. 2022
+                <span class="dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- STORY -->
+    <section class="story-section" id="story">
+        <div class="story-left reveal">
+            <span class="label">Our Origin</span>
+            <h2 class="story-heading">A Recipe<br>Written in <em>Memory</em></h2>
+            <p class="story-body">Our journey began in 2022 as a humble coffee shop in our homeland of Myanmar. And now, we bring our legacy, our family history, and the authentic taste of home straight to your table. Every dish carries the soul of Tatkone — a city in the middle of Myanmar, where flavors run as deep as the water itself.</p>
+        </div>
+        <div class="story-right reveal d2">
+            <div class="medallion">
+                <div class="medallion-inner">
+                    <span class="medallion-year">2022</span>
+                    <span class="medallion-text">Nay Pyi Taw, Tatkone &middot; Myanmar</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOD GRID -->
+    <section class="food-section" id="menu">
+        <div class="food-header reveal">
+            <h2 class="food-title">The Menu</h2>
+            <span class="food-count">03 Signatures</span>
+        </div>
+
+                <div class="food-grid">
+
+            <!-- Featured — Signature bowl -->
+            <div class="food-card card-featured reveal">
+                <div class="img-wrap">
+                    <img src="images/palatta-bowl.jpg" alt="Signature Pyay Palatta Bowl" class="card-img">
+                </div>
+                <div class="card-overlay">
+                    <span class="food-tag">Signature</span>
+                    <h3 class="food-name">Signature Pyay<br>Palatta Bowl</h3>
+                    <p class="food-desc">Rich, bold flavors inspired by our city in Myanmar. Similar to Roti — featuring yellow split beans, potato and chicken steeped in tradition.</p>
+                </div>
+            </div>
+
+            <!-- Top-right — Pork Rib -->
+            <div class="food-card card-a reveal d1">
+                <div class="img-wrap">
+                    <!-- NEW IMAGE FOR PORK RIB -->
+                    <img src="images/pork-rib-tempura.jpg" alt="Pork Rib Tempura" class="card-img">
+                </div>
+                <div class="card-overlay">
+                    <span class="food-tag">Best with Beer</span>
+                    <h3 class="food-name">Pork Rib<br>Tempura</h3>
+                    <p class="food-desc">Crispy, golden, and deeply satisfying. Our most-ordered dish.</p>
+                </div>
+            </div>
+
+            <!-- Bottom-right — Garlic Fried Chicken -->
+            <div class="food-card card-b reveal d2">
+                <div class="img-wrap">
+                    <!-- NEW IMAGE FOR GARLIC FRIED CHICKEN -->
+                    <img src="images/garlic-fried-chicken.jpg" alt="Garlic Fried Chicken" class="card-img">
+                </div>
+                <div class="card-overlay">
+                    <span class="food-tag">Classic</span>
+                    <h3 class="food-name">Garlic Fried<br>Chicken</h3>
+                    <p class="food-desc">Crispy, savory, and perfectly seasoned with aromatic fried garlic for that authentic taste of home.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- DIVIDER -->
+    <div class="gem-divider">
+        <div class="gem"></div>
+    </div>
+
+    <!-- VISIT SECTION -->
+    <section class="visit-section" id="visit">
+        <div class="visit-inner">
+
+            <div class="visit-left reveal">
+                <span class="label">Find Us</span>
+                <h2 class="visit-heading">Come to Our<br><em>Kitchen</em></h2>
+                <div class="visit-details">
+                    <div class="visit-item">
+                        <div class="visit-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="vi-label">Address</div>
+                            <div class="vi-value">Pridi Banomyong 3 Alley<br>Phra Khanong Nuea, Watthana<br>Bangkok 10110</div>
+                        </div>
+                    </div>
+                    <div class="visit-item">
+                        <div class="visit-icon">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.8 19.79 19.79 0 01.22 1.62a2 2 0 012-2.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 6.91a16 16 0 006.72 6.72l1.57-1.57a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2.01z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="vi-label">Phone</div>
+                            <div class="vi-value">+66 83 464 8907</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="visit-right reveal d1">
+                <div class="hours-block">
+                    <div class="label">Hours</div>
+                    <div class="hours-row">
+                        <span>Every day</span>
+                        <span>3:00 PM &mdash; 2:00 AM</span>
+                    </div>
+                </div>
+                <a href="mailto:homelandkitchen22@gmail.com" class="btn-cta">
+  <span>Get in Touch</span>
+</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <span class="foot-copy">&copy; 2025 Homeland Kitchen. All rights reserved.</span>
+        <span class="foot-loc">Bangkok, Thailand &nbsp;&middot;&nbsp; Myanmar Cuisine Since 2022</span>
+    </footer>
+
+    <script>
+        // Sticky header
+        const hdr = document.getElementById('hdr');
+        window.addEventListener('scroll', () => {
+            hdr.classList.toggle('scrolled', window.scrollY > 60);
+        }, { passive: true });
+
+        // Scroll-reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+        }, { threshold: 0.1 });
+        reveals.forEach(el => io.observe(el));
+    </script>
+
+</body>
+</html>
